@@ -3,3 +3,8 @@ node_modules
 .npmrc
 .prettierrc
 .prettierignore
+Vagrantfile
+provision.yaml
+.vagrant
+__mocks__
+__tests__
