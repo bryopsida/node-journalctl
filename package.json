@@ -1,6 +1,6 @@
 {
   "name": "@bryopsida/journalctl",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Module for consuming the Systemd Journal",
   "main": "journalctl.js",
   "keywords": [
@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/bryopsida/node-journalctl/issues"
   },
-  "homepage": "https://github.com/bryopsida/node-journalctl#readme",
+  "homepage": "https://bryopsida.github.io/node-journalctl",
   "license": "MIT",
   "devDependencies": {
     "jest": "^29.7.0",

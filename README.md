@@ -1,13 +1,15 @@
 # Journalctl
 
-This is a module for accessing the all mighty Systemd Journal and its handy dandy key-value store hidden behind every log line. In the background it spawns a journalctl process with the output format `json` and parses the serialised object stream.
+This is a module for accessing systemd journal.
 
 ## API
+
+You can find the documentation page [here](https://bryopsida.github.io/node-journalctl)
 
 Require the module and create a new instance:
 
 ```js
-const Journalctl = require('journalctl')
+const Journalctl = require('@bryopsida/journalctl')
 const journalctl = new Journalctl([opts])
 ```
 
