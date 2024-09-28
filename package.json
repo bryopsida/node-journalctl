@@ -13,7 +13,10 @@
     "test": "jest",
     "watch": "jest --watchAll",
     "lint": "npx -y prettier --check . && standard .",
-    "lint:fix": "npx -y prettier --write . && standard --fix ."
+    "lint:fix": "npx -y prettier --write . && standard --fix .",
+    "build:docs": "jsdoc --configure jsdoc.json --destination docs --readme README.md journalctl.js json-stream.js",
+    "prebuild:typings": "rm -rf *.d.ts",
+    "build:typings": "tsc --allowJs --declaration --emitDeclarationOnly --outDir . --strict --skipLibCheck journalctl.js json-stream.js"
   },
   "author": "Juergen Fitschen <me@jue.yt>",
   "repository": {
@@ -27,8 +30,10 @@
   "license": "MIT",
   "devDependencies": {
     "jest": "^29.7.0",
+    "jsdoc": "^4.0.3",
     "prettier": "^3.3.3",
-    "standard": "^17.1.2"
+    "standard": "^17.1.2",
+    "typescript": "^5.6.2"
   },
   "standard": {
     "env": [

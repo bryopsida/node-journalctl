@@ -2,9 +2,24 @@ const childProcess = require('child_process')
 const EventEmitter = require('events')
 const JSONStream = require('./json-stream.js')
 
+/**
+ * @typedef {Object} JournalctlOptions
+ * @property {boolean} [all] - Include all fields in the output.
+ * @property {number} [lines] - Number of lines to show from the journal.
+ * @property {string} [since] - Show entries since the specified date.
+ * @property {string} [identifier] - Show entries with the specified identifier.
+ * @property {string} [unit] - Show entries from the specified unit.
+ * @property {string|string[]} [filter] - Filter entries by the specified criteria.
+ */
+
 class Journalctl extends EventEmitter {
+  /** @type {childProcess.ChildProcessWithoutNullStreams} */
   #journalctl
 
+  /**
+   * Creates an instance of Journalctl.
+   * @param {JournalctlOptions} [opts={}] - Options to configure journalctl.
+   */
   constructor (opts = {}) {
     super()
 
@@ -32,6 +47,10 @@ class Journalctl extends EventEmitter {
     })
   }
 
+  /**
+   * Stops the journalctl process.
+   * @param {Function} [cb] - Callback function to be called on process exit.
+   */
   stop (cb) {
     // Kill the process
     if (cb) this.#journalctl.on('exit', cb)
