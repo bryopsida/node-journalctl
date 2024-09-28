@@ -1,5 +1,5 @@
 {
-  "name": "journalctl",
+  "name": "@bryopsida/journalctl",
   "version": "1.1.0",
   "description": "Module for consuming the Systemd Journal",
   "main": "journalctl.js",
@@ -21,12 +21,12 @@
   "author": "Juergen Fitschen <me@jue.yt>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jue89/node-journalctl.git"
+    "url": "git+https://github.com/bryopsida/node-journalctl.git"
   },
   "bugs": {
-    "url": "https://github.com/jue89/node-journalctl/issues"
+    "url": "https://github.com/bryopsida/node-journalctl/issues"
   },
-  "homepage": "https://github.com/jue89/node-journalctl#readme",
+  "homepage": "https://github.com/bryopsida/node-journalctl#readme",
   "license": "MIT",
   "devDependencies": {
     "jest": "^29.7.0",
