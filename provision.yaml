@@ -1,0 +1,36 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install Packages
+      ansible.builtin.apt:
+        state: present
+        name:
+          - apt-transport-https
+          - python3-debian
+          - gnupg2
+          - build-essential
+    - name: Download NodeSource's signing key.
+      ansible.builtin.get_url:
+        url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+        dest: /etc/apt/signing-key-nodesource-repo.asc
+        owner: root
+        group: root
+        mode: '0444'
+      register: node_signing_key
+
+    - name: Add NodeSource repositories for Node.js.
+      ansible.builtin.deb822_repository:
+        name: nodesource_22.x
+        uris: 'https://deb.nodesource.com/node_22.x'
+        types: deb
+        suites: nodistro
+        components: main
+        signed_by: '{{ node_signing_key.dest }}'
+        state: present
+
+    - name: Install Node.js
+      apt:
+        name: 'nodejs'
+        state: present
+        update_cache: yes

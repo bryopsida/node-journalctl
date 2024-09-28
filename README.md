@@ -35,3 +35,9 @@ journalctl.stop([callback])
 ```
 
 Stops journalctl and calls the optional `callback` once everything has been killed.
+
+## Test Environment
+
+If you need a test environment with journald running, and you have [vagrant](https://www.vagrantup.com/) installed, you can spin one up with `vagrant up` and remove it with `vagrant destroy` once you are finished.
+
+You can access the environment by using `vagrant ssh`. This project is available at `/vagrant` inside the vagrant box.
