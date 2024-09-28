@@ -31,7 +31,7 @@ test('emit events', () => {
   const j = new Journalctl()
   const json = { TEST: null }
   const cb = jest.fn()
-  j.on('event', cb)
+  j.on('json-message', cb)
   JSONStream.mock.calls[0][0](json)
   expect(cb.mock.calls[0][0]).toBe(json)
 })
