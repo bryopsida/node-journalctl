@@ -22,13 +22,37 @@ The optional object `opts` can have the following properties:
 - `lines`: Show the most recent journal events and limit the number of events shown (cf. man journalctl, option '-n')
 - `since`: Start showing entries on or newer than the specified date (cf. man journalctl, option '-S')
 
-### Event: 'event'
+### Event: 'json-message'
 
 ```js
-journalctl.on('event', event => {})
+journalctl.on('json-message', event => {})
 ```
 
-Is fired on every log event and hands over the object `event` describing the event. _(Oh boy ... so many events in one sentence ...)_
+Is fired on every decoded json message.
+
+### Event: 'raw-message'
+
+```js
+journalctl.on('raw-message', buffer => {})
+```
+
+Is fired on every data event from the journalctl sub process.
+
+### Event: 'error'
+
+```js
+journalctl.on('error', err => {})
+```
+
+Is fired whenever the journalctl sub process emits an error or the class encounters an error condition.
+
+### Event: 'close'
+
+```js
+journalctl.on('close', () => {})
+```
+
+Is fired whenever the journalctl sub process exits with status code 0.
 
 ### Method: stop
 
@@ -36,7 +60,78 @@ Is fired on every log event and hands over the object `event` describing the eve
 journalctl.stop([callback])
 ```
 
-Stops journalctl and calls the optional `callback` once everything has been killed.
+### Method: getStdout
+
+```js
+journalctl.getStdout().pipe(process.stdout)
+```
+
+Returns the stdout stream from the journalctl sub process.
+
+### Method: getStderr
+
+```js
+journalctl.getStderr().pipe(process.stderr)
+```
+
+Returns the stderr stream from the journalctl sub process.
+
+## Examples
+
+### Decode and tail all logs
+
+```javascript
+const Journalctl = require('@bryopsida/journalctl')
+
+const logger = new Journalctl().on('json-message', e => {
+  console.log(e)
+})
+
+process.on('SIGINT', () => {
+  logger.stop(() => {
+    process.exit()
+  })
+})
+```
+
+### Pipe raw output
+
+```javascript
+const Journalctl = require('@bryopsida/journalctl')
+
+const j = new Journalctl({
+  disableJSONMessages: true,
+  emitRawMessages: false
+})
+
+j.getStdout().pipe(process.stdout)
+j.getStderr().pipe(process.stderr)
+
+process.on('SIGINT', () => {
+  j.stop(() => {
+    process.exit()
+  })
+})
+```
+
+### Process raw events
+
+```javascript
+const Journalctl = require('@bryopsida/journalctl')
+
+const j = new Journalctl({
+  disableJSONMessages: true,
+  emitRawMessages: true
+}).on('raw-message', buffer => {
+  process.stdout.write(buffer)
+})
+
+process.on('SIGINT', () => {
+  j.stop(() => {
+    process.exit()
+  })
+})
+```
 
 ## Test Environment
 
