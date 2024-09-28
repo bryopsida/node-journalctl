@@ -8,3 +8,5 @@ provision.yaml
 .vagrant
 __mocks__
 __tests__
+docs
+jsdoc.json
