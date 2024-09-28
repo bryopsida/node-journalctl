@@ -1,0 +1,64 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        required: true
+        description: Release tag and name
+jobs:
+  release-node:
+    name: Publish Release
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+          cache: 'npm'
+          cache-dependency-path: ${{ inputs.working-dir }}/package-lock.json
+      - shell: bash
+        working-directory: ${{ inputs.working-dir }}
+        run: npm ci
+      - shell: bash
+        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN}}
+        working-directory: ${{ inputs.working-dir }}
+        env:
+          NODE_ACCESS_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - shell: bash
+        run: npm publish --access public
+        working-directory: ${{ inputs.working-dir }}
+      - if: ${{ inputs.publish-docs }}
+        shell: bash
+        run: npm run build:docs
+        working-directory: ${{ inputs.working-dir }}
+      - if: ${{ inputs.publish-docs }}
+        name: Setup Pages
+        uses: actions/configure-pages@v5
+      - if: ${{ inputs.publish-docs }}
+        name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '${{ inputs.docs-path }}'
+      - if: ${{ inputs.publish-docs == 'true' }}
+        name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Create Release
+        if: ${{ inputs.create-release }}
+        run: |
+          gh release create ${{ inputs.tag }} --generate-notes
+  publish-docs:
+    permissions:
+      pages: write
+      id-token: write
+    needs:
+      - release-node
+    uses: ./.github/workflows/build-docs.yaml
+    with:
+      publish: true
+      node_version: '22.x'
+      build_task: 'build:docs'
+      path: 'docs'
+      working_dir: '.'

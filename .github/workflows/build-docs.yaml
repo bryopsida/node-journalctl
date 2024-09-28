@@ -1,0 +1,65 @@
+
+name: Publish Docs To Github
+on: 
+  workflow_call:
+    inputs:
+      publish:
+        default: false
+        type: boolean
+        required: false
+      working_dir:
+        default: '.'
+        type: string
+        required: false
+      build_task:
+        default: build:docs
+        type: string
+        required: false
+      path:
+        default: documentation
+        type: string
+        required: false
+      node_version:
+        default: 18.x
+        type: string
+        required: false
+      runs-on:
+        type: 'string'
+        required: false
+        default: '["ubuntu-latest"]'
+        description: string of a JSON array describing the run target.
+jobs:
+  publish-docs: 
+    name: Publish Docs
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ inputs.node_version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+          cache: 'npm'
+          cache-dependency-path: ${{ inputs.working_dir }}/package-lock.json
+      - run: npm ci
+        working-directory: ${{ inputs.working_dir }}
+      - name: Build Docs
+        run: npm run ${{ inputs.build_task }}
+        working-directory: ${{ inputs.working_dir }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.path}}
+          path: |
+            ${{ inputs.working_dir }}/${{ inputs.path }}
+      - name: Setup Pages
+        if: ${{ inputs.publish }}
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        if: ${{ inputs.publish }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '${{ inputs.working_dir }}/${{ inputs.path }}'
+      - name: Deploy to GitHub Pages
+        if: ${{ inputs.publish }}
+        id: deployment
+        uses: actions/deploy-pages@v4
