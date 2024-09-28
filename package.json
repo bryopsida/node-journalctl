@@ -10,7 +10,7 @@
     "journalctl"
   ],
   "scripts": {
-    "test": "happiness && jest",
+    "test": "jest",
     "watch": "jest --watchAll",
     "lint": "npx -y prettier --check . && standard .",
     "lint:fix": "npx -y prettier --write . && standard --fix ."
