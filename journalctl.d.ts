@@ -19,14 +19,14 @@ declare class Journalctl extends EventEmitter<[never]> {
   constructor(opts?: JournalctlOptions | undefined)
   /**
    * Gets the stdout stream of the journalctl process.
-   * @returns {childProcess.ChildProcessWithoutNullStreams['stdout']} The stdout stream.
+   * @returns {node:stream}  The stdout stream.
    */
-  getStdout(): childProcess.ChildProcessWithoutNullStreams['stdout']
+  getStdout(): node
   /**
    * Gets the stderr stream of the journalctl process.
-   * @returns {childProcess.ChildProcessWithoutNullStreams['stderr']} The stderr stream.
+   * @returns {node:stream} The stderr stream.
    */
-  getStderr(): childProcess.ChildProcessWithoutNullStreams['stderr']
+  getStderr(): node
   /**
    * Stops the journalctl process.
    * @param {Function} [cb] - Callback function to be called on process exit.
@@ -38,7 +38,6 @@ declare namespace Journalctl {
   export { JournalctlOptions }
 }
 import EventEmitter = require('events')
-import childProcess = require('child_process')
 type JournalctlOptions = {
   /**
    * - Include all fields in the output.
@@ -77,3 +76,4 @@ type JournalctlOptions = {
    */
   spawnOptions?: childProcess.SpawnOptions | undefined
 }
+import childProcess = require('child_process')

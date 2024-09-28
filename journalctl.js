@@ -75,7 +75,7 @@ class Journalctl extends EventEmitter {
 
   /**
    * Gets the stdout stream of the journalctl process.
-   * @returns {childProcess.ChildProcessWithoutNullStreams['stdout']} The stdout stream.
+   * @returns {node:stream}  The stdout stream.
    */
   getStdout () {
     return this.#journalctl.stdout
@@ -83,7 +83,7 @@ class Journalctl extends EventEmitter {
 
   /**
    * Gets the stderr stream of the journalctl process.
-   * @returns {childProcess.ChildProcessWithoutNullStreams['stderr']} The stderr stream.
+   * @returns {node:stream} The stderr stream.
    */
   getStderr () {
     return this.#journalctl.stderr
