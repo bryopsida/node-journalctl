@@ -22,15 +22,10 @@ on:
         default: 18.x
         type: string
         required: false
-      runs-on:
-        type: 'string'
-        required: false
-        default: '["ubuntu-latest"]'
-        description: string of a JSON array describing the run target.
 jobs:
   publish-docs:
     name: Publish Docs
-    runs-on: ${{ fromJSON(inputs.runs-on) }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ inputs.node_version }}
