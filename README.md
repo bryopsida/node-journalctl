@@ -7,8 +7,8 @@ This is a module for accessing the all mighty Systemd Journal and its handy dand
 Require the module and create a new instance:
 
 ```js
-const Journalctl = require("journalctl");
-const journalctl = new Journalctl([opts]);
+const Journalctl = require('journalctl')
+const journalctl = new Journalctl([opts])
 ```
 
 The optional object `opts` can have the following properties:
@@ -23,7 +23,7 @@ The optional object `opts` can have the following properties:
 ### Event: 'event'
 
 ```js
-journalctl.on("event", (event) => {});
+journalctl.on('event', event => {})
 ```
 
 Is fired on every log event and hands over the object `event` describing the event. _(Oh boy ... so many events in one sentence ...)_
@@ -31,7 +31,7 @@ Is fired on every log event and hands over the object `event` describing the eve
 ### Method: stop
 
 ```js
-journalctl.stop([callback]);
+journalctl.stop([callback])
 ```
 
 Stops journalctl and calls the optional `callback` once everything has been killed.

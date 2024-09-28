@@ -1,2 +1,2 @@
-module.exports = jest.fn();
-module.exports.prototype.decode = jest.fn();
+module.exports = jest.fn()
+module.exports.prototype.decode = jest.fn()

@@ -12,8 +12,8 @@
   "scripts": {
     "test": "happiness && jest",
     "watch": "jest --watchAll",
-    "lint": "npx -y prettier --check .",
-    "lint:fix": "npx -y prettier --write ."
+    "lint": "npx -y prettier --check . && standard .",
+    "lint:fix": "npx -y prettier --write . && standard --fix ."
   },
   "author": "Juergen Fitschen <me@jue.yt>",
   "repository": {
@@ -26,16 +26,13 @@
   "homepage": "https://github.com/jue89/node-journalctl#readme",
   "license": "MIT",
   "devDependencies": {
-    "happiness": "^10.0.2",
-    "jest": "^24.1.0"
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "standard": "^17.1.2"
   },
-  "happiness": {
-    "globals": [
-      "jest",
-      "describe",
-      "test",
-      "expect",
-      "beforeEach"
+  "standard": {
+    "env": [
+      "jest"
     ]
   },
   "jest": {
