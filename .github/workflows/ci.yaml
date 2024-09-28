@@ -2,10 +2,10 @@ name: Validate
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 jobs:
   validate:
     name: Validate
@@ -31,3 +31,16 @@ jobs:
       - run: npm audit --omit dev
         continue-on-error: true
       - run: npm run test --if-present
+  publish-docs:
+    permissions:
+      pages: write
+      id-token: write
+    needs:
+      - validate
+    uses: ./.github/workflows/build-docs.yaml
+    with:
+      publish: false
+      node_version: '22.x'
+      build_task: 'build:docs'
+      path: 'docs'
+      working_dir: '.'
