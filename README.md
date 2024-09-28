@@ -133,6 +133,28 @@ process.on('SIGINT', () => {
 })
 ```
 
+### Use command prefix
+
+```javascript
+const Journalctl = require('@bryopsida/journalctl')
+
+const j = new Journalctl({
+  commandPrefix: ['vagrant', 'ssh', '-c'],
+  quoteArgs: true,
+  spawnOptions: {
+    shell: true
+  }
+}).on('json-message', e => {
+  console.log(e)
+})
+
+process.on('SIGINT', () => {
+  j.stop(() => {
+    process.exit()
+  })
+})
+```
+
 ## Test Environment
 
 If you need a test environment with journald running, and you have [vagrant](https://www.vagrantup.com/) installed, you can spin one up with `vagrant up` and remove it with `vagrant destroy` once you are finished.

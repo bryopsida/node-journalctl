@@ -13,9 +13,12 @@ const JSONStream = require('./json-stream.js')
  * @property {boolean} [emitRawMessages] - Emit raw messages instead of parsed JSON.
  * @property {boolean} [disableJSONMessages] - Disable JSON message parsing.
  * @property {childProcess.SpawnOptions} [spawnOptions] - Options to pass to the child process spawn.
+ * @property {string[]} [commandPrefix] - Command prefix to use instead of 'journalctl'.
+ * @property {boolean} [quoteArgs] - When using a command prefix, wrap the original command and arguments in quotes.
  */
 
 class Journalctl extends EventEmitter {
+  #cmd = 'journalctl'
   /** @type {childProcess.ChildProcessWithoutNullStreams} */
   #journalctl
   /** @type {boolean} */
@@ -52,8 +55,17 @@ class Journalctl extends EventEmitter {
       opts.filter.forEach(f => this.#args.push(f))
     }
 
+    if (opts.commandPrefix && opts.commandPrefix.length > 0) {
+      const newArgs = [this.#cmd, ...this.#args]
+      if (opts.quoteArgs) {
+        this.#args = [`"${newArgs.join(' ')}"`]
+      }
+      this.#args = opts.commandPrefix.slice(1).concat(this.#args)
+      this.#cmd = opts.commandPrefix[0]
+    }
+
     // Start journalctl
-    this.#journalctl = childProcess.spawn('journalctl', this.#args, this.#spawnOptions)
+    this.#journalctl = childProcess.spawn(this.#cmd, this.#args, this.#spawnOptions)
       .on('error', this.#onError.bind(this))
       .on('close', this.#onClose.bind(this))
 

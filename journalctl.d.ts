@@ -10,6 +10,8 @@ export = Journalctl
  * @property {boolean} [emitRawMessages] - Emit raw messages instead of parsed JSON.
  * @property {boolean} [disableJSONMessages] - Disable JSON message parsing.
  * @property {childProcess.SpawnOptions} [spawnOptions] - Options to pass to the child process spawn.
+ * @property {string[]} [commandPrefix] - Command prefix to use instead of 'journalctl'.
+ * @property {boolean} [quoteArgs] - When using a command prefix, wrap the original command and arguments in quotes.
  */
 declare class Journalctl extends EventEmitter<[never]> {
   /**
@@ -75,5 +77,13 @@ type JournalctlOptions = {
    * - Options to pass to the child process spawn.
    */
   spawnOptions?: childProcess.SpawnOptions | undefined
+  /**
+   * - Command prefix to use instead of 'journalctl'.
+   */
+  commandPrefix?: string[] | undefined
+  /**
+   * - When using a command prefix, wrap the original command and arguments in quotes.
+   */
+  quoteArgs?: boolean | undefined
 }
 import childProcess = require('child_process')
